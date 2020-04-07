@@ -12,16 +12,9 @@
   </div>
 </template>
 
-<script>
-export default {
-  created() {
-    document.documentElement.style.fontSize = window.innerWidth / 7.5 + 'px'
-  }
+<style lang="scss" scoped>
+@import '@/assets/css/variable.scss';
+.van-tabbar {
+  height: $tabHeight !important;
 }
-</script>
-
-<style>
-/* .van-tabbar {
-  height: 1rem !important;
-} */
-</style>
+</style>>

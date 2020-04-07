@@ -18,14 +18,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/css/variable.scss';
 .home {
   position: relative;
   height: 3000px;
+  margin-bottom: $tabHeight;
   background-color: rgb(219, 146, 146);
-}
-.bottom {
-  position: absolute;
-  bottom: 0;
+  .bottom {
+    position: absolute;
+    bottom: 0;
+  }
 }
 </style>
