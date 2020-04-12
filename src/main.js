@@ -3,10 +3,14 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/vant.js'
+import './assets/js/setRem.js'
+
+import axios from 'axios'
+axios.defaults.baseURL = 'http://192.168.1.103:3000/'
+// 绑定后，每个组件可通过 this.$http 使用axios
+Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
-
-document.documentElement.style.fontSize = window.innerWidth / 7.5 + 'px'
 
 new Vue({
   router,

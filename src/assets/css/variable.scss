@@ -1,1 +1,8 @@
 $tabHeight: 1rem;
+$themeColor: #2ca6cb;
+
+@mixin imgWrapHeight($percent) {
+  height: 0;
+  padding-bottom: $percent;
+  overflow: hidden;
+}
