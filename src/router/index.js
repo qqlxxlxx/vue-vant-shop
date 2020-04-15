@@ -43,7 +43,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // 获取网页滚动距离，兼容谷歌、ie、火狐和高级版本等浏览器
-  // from.meta.position = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
   from.meta.position = tools.getScrollTop()
   next()
 })

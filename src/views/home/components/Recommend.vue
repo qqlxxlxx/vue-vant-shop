@@ -73,7 +73,7 @@ export default {
           margin-bottom: 0.08rem;
         }
         .price {
-          color: #d0021b;
+          color: $priceColor;
         }
       }
     }

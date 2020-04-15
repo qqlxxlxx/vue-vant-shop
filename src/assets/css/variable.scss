@@ -1,8 +1,15 @@
 $tabHeight: 1rem;
 $themeColor: #2ca6cb;
+$priceColor: #d0021b;
 
 @mixin imgWrapHeight($percent) {
   height: 0;
   padding-bottom: $percent;
   overflow: hidden;
+}
+
+@mixin center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

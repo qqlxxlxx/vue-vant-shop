@@ -12,7 +12,13 @@ import {
   SwipeItem,
   Grid,
   GridItem,
-  List
+  List,
+  Tab,
+  Tabs,
+  GoodsAction,
+  GoodsActionIcon,
+  GoodsActionButton,
+  Sku
 } from 'vant'
 
 Vue.use(Button)
@@ -27,3 +33,9 @@ Vue.use(SwipeItem)
 Vue.use(Grid)
 Vue.use(GridItem)
 Vue.use(List)
+Vue.use(Tab)
+Vue.use(Tabs)
+Vue.use(GoodsAction)
+Vue.use(GoodsActionIcon)
+Vue.use(GoodsActionButton)
+Vue.use(Sku)

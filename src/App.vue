@@ -28,13 +28,11 @@
 
 <style lang="scss" scoped>
 @import '@/assets/css/variable.scss';
-html,
-body {
-  height: 100%;
-}
-.van-tabbar {
-  height: $tabHeight !important;
-  background: rgba(250, 250, 250, 0.98);
+#app {
+  ::v-deep .van-tabbar {
+    height: $tabHeight;
+    background: rgba(250, 250, 250, 0.98);
+  }
   .van-tabbar-item {
     font-size: 0.22rem;
   }
