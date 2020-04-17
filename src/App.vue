@@ -29,6 +29,8 @@
 <style lang="scss" scoped>
 @import '@/assets/css/variable.scss';
 #app {
+  height: 100%;
+  touch-action: none;
   ::v-deep .van-tabbar {
     height: $tabHeight;
     background: rgba(250, 250, 250, 0.98);

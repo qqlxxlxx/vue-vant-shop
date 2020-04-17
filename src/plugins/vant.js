@@ -18,7 +18,16 @@ import {
   GoodsAction,
   GoodsActionIcon,
   GoodsActionButton,
-  Sku
+  Sku,
+  Empty,
+  PullRefresh,
+  Card,
+  NavBar,
+  SwipeCell,
+  Checkbox,
+  CheckboxGroup,
+  SubmitBar,
+  Stepper
 } from 'vant'
 
 Vue.use(Button)
@@ -39,3 +48,12 @@ Vue.use(GoodsAction)
 Vue.use(GoodsActionIcon)
 Vue.use(GoodsActionButton)
 Vue.use(Sku)
+Vue.use(Empty)
+Vue.use(PullRefresh)
+Vue.use(Card)
+Vue.use(NavBar)
+Vue.use(SwipeCell)
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
+Vue.use(SubmitBar)
+Vue.use(Stepper)

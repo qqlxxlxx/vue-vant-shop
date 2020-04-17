@@ -3,25 +3,47 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-    cartList: []
-  },
-  getters: {
-    // cartCount: state => {
-    //   state.cartList.reduce((returnValue, item) => {
-    //     return returnValue + item.selectedNum
-    //   }, 0)
-    // }
-  },
-  mutations: {
-    handleCartList(state, skuData) {
-      // state.cartList.push(skuData)
-      // console.log(skuData)
+const state = {
+  cartList: [],
+  cartEmpty: false,
+  updateSuccess: true
+}
+
+const mutations = {}
+
+const actions = {
+  async getCartList({ state }) {
+    try {
+      const { data } = await Vue.prototype.$http.get(
+        '/cart?num_gte=1&_sort=update&_order=desc'
+      )
+      // console.log(data)
+      if (data.length === 0) state.cartEmpty = true
+      state.cartList = data
+      state.cartEmpty = false
+    } catch (err) {
+      // console.log(err)
     }
   },
-  actions: {
-  },
-  modules: {
+  async updateGoods({ dispatch, state }, args) {
+    try {
+      const { id, num, update } = args
+      const paramsData = { num: num || 0 }
+      if (update) {
+        paramsData.update = new Date().getTime()
+      }
+      const { data } = await Vue.prototype.$http.patch('/cart/' + id, paramsData)
+      state.updateSuccess = !!data
+      dispatch('getCartList')
+    } catch (err) {
+      // console.log(err)
+      state.updateSuccess = false
+    }
   }
+}
+
+export default new Vuex.Store({
+  state,
+  mutations,
+  actions
 })

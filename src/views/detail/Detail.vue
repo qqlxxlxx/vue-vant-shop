@@ -9,7 +9,7 @@
       line-width="30px"
     >
       <template #nav-left>
-        <div class="tab-left" @click="backHome">
+        <div class="tab-left" @click="back">
           <van-icon name="arrow-left" />
         </div>
       </template>
@@ -78,7 +78,6 @@
       v-model="isShowSku"
       :sku="sku"
       :goods="sku.goods"
-      :quota="sku.quota"
       :initial-sku="sku.initial_sku"
     >
       <template #sku-actions>
@@ -117,8 +116,8 @@ export default {
   },
   computed: {},
   methods: {
-    backHome() {
-      this.$router.push({ path: '/home' })
+    back() {
+      this.$router.back()
     },
     async getDetailData() {
       try {
@@ -169,24 +168,20 @@ export default {
         this.sku = res[0].sku
       } catch {}
     },
-    async confirmClick() {
+    confirmClick() {
       if (this.isAddCart) {
-        try {
-          const {
-            selectedNum,
-            selectedSkuComb
-          } = this.$refs.skuRef.getSkuData()
-          const { data: res } = await this.$http.put(
-            '/cart/' + selectedSkuComb.id,
-            {
-              num: selectedNum
-            }
-          )
-          if (res) Toast('商品已成功添加到购物车')
-          this.isShowSku = false
-        } catch {
+        const { selectedNum, selectedSkuComb } = this.$refs.skuRef.getSkuData()
+        this.$store.dispatch('updateGoods', {
+          id: selectedSkuComb.id,
+          num: selectedNum,
+          update: true
+        })
+        if (this.$store.state.updateSuccess) {
+          Toast('商品已成功添加到购物车')
+        } else {
           Toast('商品添加到购物车失败')
         }
+        this.isShowSku = false
       } else {
         this.$router.push({ path: '/profile' })
       }
