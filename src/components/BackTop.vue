@@ -14,6 +14,7 @@ export default {}
   z-index: 10;
   width: 1rem;
   height: 1rem;
+  margin-bottom: env(safe-area-inset-bottom);
   background: url(../assets/images/top.png) no-repeat center/cover;
   user-select: none;
 }

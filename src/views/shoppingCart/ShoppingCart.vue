@@ -160,6 +160,7 @@ export default {
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
+    touch-action: none;
   }
   .van-card {
     background: #fff;

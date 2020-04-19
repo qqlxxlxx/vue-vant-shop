@@ -1,9 +1,8 @@
 <template>
   <div class="category">
     <div class="grid">
-      <div class="grid-item" v-for="item in category" :key="item.id">
-        <!-- <img :src="item.img" /> -->
-        <img src />
+      <div class="grid-item" v-for="item in category" :key="item.id" @click="gridClick(item.cate)">
+        <img :src="item.img" />
         <div>{{item.title}}</div>
       </div>
     </div>
@@ -14,6 +13,11 @@
 export default {
   props: {
     category: Array
+  },
+  methods: {
+    gridClick(cate) {
+      this.$emit('gridClick', cate)
+    }
   }
 }
 </script>

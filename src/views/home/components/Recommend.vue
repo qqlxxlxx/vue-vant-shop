@@ -10,7 +10,7 @@
         :key="item.id"
       >
         <div class="img-warp">
-          <!-- <img :src="item.src" /> -->
+          <img :src="item.src" />
         </div>
         <div class="info">
           <span class="name van-ellipsis">{{item.name}}</span>

@@ -8,19 +8,26 @@ const routes = [
   { path: '/', redirect: '/home' },
   {
     path: '/home',
-    component: () => import(/* webpackChunkName: "shoppingCart" */ '../views/home/Home.vue')
+    component: () => import(/* webpackChunkName: "shoppingCart" */ '../views/home/Home.vue'),
+    meta: { tabbarShow: true }
   },
   {
     path: '/shoppingCart',
-    component: () => import(/* webpackChunkName: "shoppingCart" */ '../views/shoppingCart/ShoppingCart.vue')
+    component: () => import(/* webpackChunkName: "shoppingCart" */ '../views/shoppingCart/ShoppingCart.vue'),
+    meta: { tabbarShow: true }
   },
   {
     path: '/profile',
-    component: () => import(/* webpackChunkName: "profile" */ '../views/profile/Profile.vue')
+    component: () => import(/* webpackChunkName: "profile" */ '../views/profile/Profile.vue'),
+    meta: { tabbarShow: true }
   },
   {
     path: '/detail/:id',
     component: () => import(/* webpackChunkName: "detail" */ '../views/detail/Detail.vue')
+  },
+  {
+    path: '/search',
+    component: () => import(/* webpackChunkName: "search" */ '../views/search/Search.vue')
   }
 ]
 

@@ -1,9 +1,9 @@
 <template>
   <div class="my-swipe">
-    <van-swipe :autoplay="5000" :duration="1000" indicator-color="#fff">
+    <van-swipe :autoplay="5000" indicator-color="#fff">
       <van-swipe-item v-for="(image, index) in bannerImages" :key="index">
         <div class="img-wrap">
-          <!-- <img :src="image" /> -->
+          <img :src="image" />
         </div>
       </van-swipe-item>
     </van-swipe>

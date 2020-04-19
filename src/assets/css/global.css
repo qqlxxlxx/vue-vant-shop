@@ -1,9 +1,9 @@
 html,
 body {
-  height: 100%;
   font-size: 0.28rem;
 }
 
 img {
-  vertical-align: middle;
+  width: 100%;
+  display: block;
 }
