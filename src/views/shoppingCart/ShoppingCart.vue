@@ -108,7 +108,7 @@ export default {
       }
       this.calcTotal(this.result, this.cartList)
     },
-    // 计算价格总和
+    // 计算价格总和的方法
     calcTotal(idArr, cartList) {
       let total = 0
       cartList.forEach((item, index) => {
@@ -120,10 +120,13 @@ export default {
       })
       this.totalPrice = total * 100
     },
+    // 数量变化时触发
     changeNum(id, num) {
+      this.calcTotal(this.result, this.cartList)
       this.$store.dispatch('updateGoods', { id, num })
     },
     onSubmit() {
+      if (this.result.length === 0) return
       this.$router.push({ path: '/profile' })
     }
   }
@@ -160,7 +163,6 @@ export default {
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
-    touch-action: none;
   }
   .van-card {
     background: #fff;

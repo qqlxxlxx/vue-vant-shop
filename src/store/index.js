@@ -30,7 +30,7 @@ const actions = {
       const { id, num, update } = args
       const paramsData = { num: num || 0 }
       if (update) {
-        paramsData.update = new Date().getTime()
+        paramsData.update = Date().now()
       }
       const { data } = await Vue.prototype.$http.patch('/cart/' + id, paramsData)
       state.updateSuccess = !!data

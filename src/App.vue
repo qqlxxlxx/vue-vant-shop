@@ -23,44 +23,24 @@
         我的
       </van-tabbar-item>
     </van-tabbar>
-    <div v-show="isShowBackTop" @click="backTop">
-      <BackTop />
-    </div>
   </div>
 </template>
 
 <script>
-import tools from '@/assets/js/tools.js'
-import BackTop from '@/components/BackTop'
 export default {
-  data() {
-    return {
-      timerId: null,
-      flag: true,
-      isShowBackTop: false
-    }
-  },
-  components: {
-    BackTop
-  },
   mounted() {
-    window.addEventListener('scroll', this.handleScroll, true)
-  },
-  methods: {
-    handleScroll(e) {
-      // 函数节流
-      if (!this.flag) return
-      this.flag = false
-      this.timerId && clearTimeout(this.timerId)
-      this.timerId = setTimeout(() => {
-        this.flag = true
-        const scrollY = tools.getScrollTop()
-        this.isShowBackTop = scrollY > 500
-      }, 500)
-    },
-    backTop() {
-      tools.setScrollTop(0)
-    }
+    var lastTouchEnd = 0
+    document.documentElement.addEventListener(
+      'touchend',
+      function(e) {
+        var now = Date.now()
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault()
+        }
+        lastTouchEnd = now
+      },
+      false
+    )
   }
 }
 </script>

@@ -11,7 +11,7 @@
         <img :src="item.src" />
       </div>
       <div class="item-info">
-        <p>{{item.name}}</p>
+        <p class="van-multi-ellipsis--l2">{{item.name}}</p>
         <p class="price">￥{{item.price}}</p>
       </div>
     </router-link>

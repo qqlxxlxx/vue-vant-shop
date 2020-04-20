@@ -1,91 +1,103 @@
 <template>
   <div class="detail">
-    <van-tabs
-      v-model="active"
-      scrollspy
-      sticky
-      title-active-color="#2ca6cb"
-      line-height="2px"
-      line-width="30px"
-    >
-      <template #nav-left>
-        <div class="tab-left" @click="back">
-          <van-icon name="arrow-left" />
-        </div>
-      </template>
+    <div v-if="isEmpty">
+      <div class="tab-left" @click="back">
+        <van-icon name="arrow-left" />
+      </div>
+      <van-empty
+        class="custom-image"
+        image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+        description="暂无数据"
+      />
+    </div>
+    <div v-else>
+      <van-tabs
+        v-model="active"
+        scrollspy
+        sticky
+        title-active-color="#2ca6cb"
+        line-height="2px"
+        line-width="30px"
+      >
+        <template #nav-left>
+          <div class="tab-left" @click="back">
+            <van-icon name="arrow-left" />
+          </div>
+        </template>
 
-      <!-- 商品区域 -->
-      <van-tab title="商品">
-        <!-- 轮播图 -->
-        <van-swipe :duration="1000" @change="changeImg">
-          <van-swipe-item v-for="(item, index) in banner" :key="index" @click="PreviewImg(index)">
+        <!-- 商品区域 -->
+        <van-tab title="商品">
+          <!-- 轮播图 -->
+          <van-swipe :duration="1000" @change="changeImg">
+            <van-swipe-item v-for="(item, index) in banner" :key="index" @click="PreviewImg(index)">
+              <img :src="item" />
+            </van-swipe-item>
+            <template #indicator>
+              <div class="custom-indicator">{{ current + 1 }}/{{ banner.length }}</div>
+            </template>
+          </van-swipe>
+
+          <div class="goods-info">
+            <div class="price">
+              <span class="symbol">￥</span>
+              <span>{{price}}</span>
+            </div>
+            <div class="title">{{title}}</div>
+          </div>
+
+          <div class="service-warp border-top">
+            <label>服务</label>
+            <div class="service">
+              <div v-for="(item,index) in service" :key="index">{{item}}</div>
+            </div>
+          </div>
+        </van-tab>
+        <!-- 参数区域 -->
+        <van-tab title="参数">
+          <div class="props-wrap border-top">
+            <div class="props">规格参数</div>
+            <table>
+              <tbody>
+                <tr class="van-hairline--top" v-for="(item, index) in specifications" :key="index">
+                  <th>{{item[0]}}</th>
+                  <td>{{item[1]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </van-tab>
+        <!-- 详情区域 -->
+        <van-tab title="详情">
+          <div v-for="(item, index) in detailImg" :key="index">
             <img :src="item" />
-          </van-swipe-item>
-          <template #indicator>
-            <div class="custom-indicator">{{ current + 1 }}/{{ banner.length }}</div>
-          </template>
-        </van-swipe>
-
-        <div class="goods-info">
-          <div class="price">
-            <span class="symbol">￥</span>
-            <span>{{price}}</span>
           </div>
-          <div class="title">{{title}}</div>
-        </div>
+        </van-tab>
 
-        <div class="service-warp border-top">
-          <label>服务</label>
-          <div class="service">
-            <div v-for="(item,index) in service" :key="index">{{item}}</div>
+        <template #nav-right>
+          <div class="tab-right"></div>
+        </template>
+      </van-tabs>
+
+      <van-goods-action>
+        <van-goods-action-icon to="/shoppingCart" icon="cart-o" text="购物车" />
+        <van-goods-action-button type="warning" text="加入购物车" @click="showSku('addCart')" />
+        <van-goods-action-button type="danger" text="立即购买" @click="showSku" />
+      </van-goods-action>
+
+      <van-sku
+        ref="skuRef"
+        v-model="isShowSku"
+        :sku="sku"
+        :goods="sku.goods"
+        :initial-sku="sku.initial_sku"
+      >
+        <template #sku-actions>
+          <div class="confirm-btn">
+            <van-button round color="#d0021b" @click="confirmClick">确认</van-button>
           </div>
-        </div>
-      </van-tab>
-      <!-- 参数区域 -->
-      <van-tab title="参数">
-        <div class="props-wrap border-top">
-          <div class="props">规格参数</div>
-          <table>
-            <tbody>
-              <tr class="van-hairline--top" v-for="(item, index) in specifications" :key="index">
-                <th>{{item[0]}}</th>
-                <td>{{item[1]}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </van-tab>
-      <!-- 详情区域 -->
-      <van-tab title="详情">
-        <div v-for="(item, index) in detailImg" :key="index">
-          <img :src="item" />
-        </div>
-      </van-tab>
-
-      <template #nav-right>
-        <div class="tab-right"></div>
-      </template>
-    </van-tabs>
-
-    <van-goods-action>
-      <van-goods-action-icon to="/shoppingCart" icon="cart-o" text="购物车" />
-      <van-goods-action-button type="warning" text="加入购物车" @click="showSku('addCart')" />
-      <van-goods-action-button type="danger" text="立即购买" @click="showSku" />
-    </van-goods-action>
-
-    <van-sku
-      ref="skuRef"
-      v-model="isShowSku"
-      :sku="sku"
-      :goods="sku.goods"
-      :initial-sku="sku.initial_sku"
-    >
-      <template #sku-actions>
-        <div class="confirm-btn">
-          <van-button round color="#d0021b" @click="confirmClick">确认</van-button>
-        </div>
-      </template>
-    </van-sku>
+        </template>
+      </van-sku>
+    </div>
   </div>
 </template>
 
@@ -98,6 +110,7 @@ export default {
   name: 'Detail',
   data() {
     return {
+      isEmpty: true,
       active: 0,
       current: 0,
       banner: [],
@@ -124,7 +137,11 @@ export default {
         const id = this.$route.params.id
         const { data: res } = await this.$http.get('/detail?id=' + id)
         // console.log(res[0])
-        if (res.length === 0) return
+        if (res.length === 0) {
+          this.isEmpty = true
+          return
+        }
+        this.isEmpty = false
         this.banner = res[0].banner
         this.price = res[0].price
         this.title = res[0].title
@@ -198,14 +215,11 @@ export default {
   left: 0;
   z-index: 2;
   width: 100%;
-  min-height: 100vh;
+  min-height: 80vh;
   padding-bottom: $tabHeight;
   background-color: #fff;
   font-size: 0.26rem;
   overflow: hidden;
-  img {
-    width: 100%;
-  }
   .border-top {
     border-top: 0.2rem solid #f9f9f9;
   }

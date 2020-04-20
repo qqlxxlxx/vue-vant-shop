@@ -33,7 +33,6 @@ export default {
       padding: 0.1rem 0.2rem;
       text-align: center;
       img {
-        display: block;
         width: 0.82rem;
         height: 0.82rem;
         margin: 0 auto;

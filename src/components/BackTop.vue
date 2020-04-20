@@ -11,7 +11,7 @@ export default {}
   position: fixed;
   bottom: 1.4rem;
   right: 0.2rem;
-  z-index: 10;
+  z-index: 2;
   width: 1rem;
   height: 1rem;
   margin-bottom: env(safe-area-inset-bottom);

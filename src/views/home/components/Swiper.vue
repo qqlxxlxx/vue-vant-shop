@@ -33,7 +33,6 @@ export default {
       overflow: hidden;
     }
     img {
-      width: 100%;
       pointer-events: none;
     }
   }

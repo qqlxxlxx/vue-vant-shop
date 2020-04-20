@@ -51,19 +51,13 @@ export default {
       overflow: hidden;
       background: #f9f9f9;
       .img-warp {
-        // width: 100%;
         width: 2.6rem;
         height: 2.6rem;
         margin: 0.4rem auto 0;
         overflow: hidden;
-        img {
-          width: 100%;
-          vertical-align: bottom;
-        }
       }
       .info {
-        padding: 0.2rem 0 0.3rem;
-        // background: #f1f1f1;
+        padding: 0.2rem 0.2rem 0.3rem;
         text-align: center;
         font-size: 0.28rem;
         display: flex;
