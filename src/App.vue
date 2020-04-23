@@ -26,25 +26,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  mounted() {
-    var lastTouchEnd = 0
-    document.documentElement.addEventListener(
-      'touchend',
-      function(e) {
-        var now = Date.now()
-        if (now - lastTouchEnd <= 300) {
-          e.preventDefault()
-        }
-        lastTouchEnd = now
-      },
-      false
-    )
-  }
-}
-</script>
-
 <style lang="scss" scoped>
 @import '@/assets/css/variable.scss';
 #app {

@@ -71,7 +71,7 @@ export default {
         this.flag = true
         const scrollY = tools.getScrollTop()
         this.isShowBackTop = scrollY > 500
-      }, 300)
+      }, 500)
     },
     backTop() {
       tools.setScrollTop(0)

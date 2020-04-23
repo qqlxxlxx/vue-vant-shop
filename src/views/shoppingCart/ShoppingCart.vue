@@ -18,7 +18,8 @@
               :before-close="beforeClose"
               :name="item.id"
             >
-              <van-checkbox :name="item.id" label-disabled>
+              <div class="cell-content">
+                <van-checkbox :name="item.id" />
                 <van-card
                   :price="item.price"
                   :desc="item.desc"
@@ -34,7 +35,7 @@
                     />
                   </template>
                 </van-card>
-              </van-checkbox>
+              </div>
               <template #right>
                 <van-button class="delete-button" square text="删除" type="danger" />
               </template>
@@ -62,6 +63,7 @@ export default {
     }
   },
   created() {
+    console.log(window.location.host)
     this.$store.dispatch('getCartList')
   },
   computed: {
@@ -159,14 +161,21 @@ export default {
   }
   .van-swipe-cell {
     margin: 10px 10px 0 10px;
-    padding-left: 16px;
     background: #fff;
     border-radius: 10px;
-    overflow: hidden;
+    .cell-content {
+      display: flex;
+    }
+  }
+  .van-checkbox {
+    flex: 1;
+    justify-content: center;
+    touch-action: none;
   }
   .van-card {
+    flex: 7;
+    padding-left: 0;
     background: #fff;
-    border-radius: 10px;
   }
   .delete-button {
     height: 100%;
@@ -175,6 +184,10 @@ export default {
     position: fixed;
     left: 0;
     bottom: $tabHeight;
+    touch-action: none;
+  }
+  .van-stepper {
+    touch-action: none;
   }
 }
 </style>

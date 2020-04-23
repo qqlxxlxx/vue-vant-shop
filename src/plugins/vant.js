@@ -27,7 +27,10 @@ import {
   Checkbox,
   CheckboxGroup,
   SubmitBar,
-  Stepper
+  Stepper,
+  Form,
+  Field,
+  Loading
 } from 'vant'
 
 Vue.use(Button)
@@ -57,3 +60,6 @@ Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
 Vue.use(SubmitBar)
 Vue.use(Stepper)
+Vue.use(Form)
+Vue.use(Field)
+Vue.use(Loading)
