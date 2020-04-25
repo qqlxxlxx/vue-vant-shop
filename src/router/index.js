@@ -8,18 +8,18 @@ const routes = [
   { path: '/', redirect: '/home' },
   {
     path: '/home',
-    component: () => import(/* webpackChunkName: "shoppingCart" */ '../views/home/Home.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '../views/home/Home.vue'),
     meta: { tabbarShow: true }
   },
   {
-    path: '/shoppingCart',
-    component: () => import(/* webpackChunkName: "shoppingCart" */ '../views/shoppingCart/ShoppingCart.vue'),
+    path: '/cart',
+    component: () => import(/* webpackChunkName: "cart" */ '../views/cart/Cart.vue'),
     meta: { tabbarShow: true }
   },
   {
     path: '/profile',
-    component: () => import(/* webpackChunkName: "profile" */ '../views/profile/Profile.vue'),
-    meta: { tabbarShow: true }
+    component: () => import(/* webpackChunkName: "profile" */ '../views/profile/Profile.vue')
+    // meta: { tabbarShow: true }
   },
   {
     path: '/detail/:id',
@@ -39,7 +39,7 @@ const router = new VueRouter({
     if (savedPosition) {
       return savedPosition
     } else {
-      if (to.path === '/home' || to.path === '/shoppingCart' || to.path === '/profile') {
+      if (to.path === '/home') {
         const scrollY = to.meta.position || 0
         return { x: 0, y: scrollY }
       }
@@ -49,8 +49,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // 获取网页滚动距离，兼容谷歌、ie、火狐和高级版本等浏览器
-  from.meta.position = tools.getScrollTop()
+  // 将首页滚动位置存起来
+  if (from.path === '/home') from.meta.position = tools.getScrollTop()
   next()
 })
 

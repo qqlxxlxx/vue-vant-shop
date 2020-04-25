@@ -1,9 +1,11 @@
 <template>
   <div class="home" ref="home">
-    <van-search disabled shape="round" placeholder="请输入搜索关键词" @click="goSearch" />
+    <TopBar @click.native="toSearch">
+      <MySearch disabled />
+    </TopBar>
 
     <Swiper :bannerImages="bannerImages" />
-    <Category :category="category" @gridClick="gridClick" />
+    <Category :category="category" @gridClick="cateClick" />
 
     <van-list
       v-model="loading"
@@ -16,15 +18,15 @@
       <Recommend :productList="productList" />
     </van-list>
 
-    <div v-show="isShowBackTop" @click="backTop">
-      <BackTop />
-    </div>
+    <TopIcon v-show="isShowBackTop" />
   </div>
 </template>
 
 <script>
 import tools from '@/assets/js/tools.js'
-import BackTop from '@/components/BackTop'
+import TopIcon from '@/components/TopIcon'
+import TopBar from '@/components/TopBar'
+import MySearch from '@/components/MySearch'
 import Swiper from './components/Swiper'
 import Category from './components/Category'
 import Recommend from './components/Recommend'
@@ -44,7 +46,9 @@ export default {
     }
   },
   components: {
-    BackTop,
+    TopIcon,
+    TopBar,
+    MySearch,
     Swiper,
     Category,
     Recommend
@@ -69,12 +73,8 @@ export default {
       this.timerId && clearTimeout(this.timerId)
       this.timerId = setTimeout(() => {
         this.flag = true
-        const scrollY = tools.getScrollTop()
-        this.isShowBackTop = scrollY > 500
+        this.isShowBackTop = tools.getScrollTop() > 500
       }, 500)
-    },
-    backTop() {
-      tools.setScrollTop(0)
     },
     async getHomeData() {
       try {
@@ -99,10 +99,10 @@ export default {
         this.error = true
       }
     },
-    gridClick(cate) {
+    cateClick(cate) {
       this.$router.push({ path: '/search', query: { cate } })
     },
-    goSearch() {
+    toSearch() {
       this.$router.push({ path: '/search' })
     }
   }
@@ -113,20 +113,10 @@ export default {
 @import '@/assets/css/variable.scss';
 .home {
   position: relative;
-  padding-top: 46px;
-  margin-bottom: $tabHeight;
-  .van-search {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    width: 100%;
-    padding: 6px 20px;
-  }
-  .bottom {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+  padding-top: 0.88rem;
+  margin-bottom: 60px;
+  .top-bar {
+    padding: 0 0.4rem;
   }
 }
 </style>

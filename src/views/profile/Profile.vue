@@ -1,17 +1,27 @@
 <template>
   <div class="profile">
     <div class="login">
-      <div class="back-btn" @click="back">
-        <van-icon name="arrow-left" />
-      </div>
-      <van-form @submit="onSubmit">
+      <BackBtn class="back-btn" />
+      <form method="post" @submit="onSubmit">
         <div class="title">请登录</div>
-        <van-field v-model="username" name="username" label="用户名" placeholder="用户名" />
-        <van-field v-model="password" type="password" name="password" label="密码" placeholder="密码" />
-        <div style="margin: 30px;">
-          <van-button :disabled="isDisabled" round block type="info" native-type="submit">提交</van-button>
+        <div class="form-item van-hairline--bottom">
+          <div class="label">用户名</div>
+          <input
+            type="text"
+            autocomplete="off"
+            v-model="username"
+            name="username"
+            placeholder="用户名"
+          />
         </div>
-      </van-form>
+        <div class="form-item van-hairline--bottom">
+          <div class="label">密码</div>
+          <input type="password" v-model="password" name="password" placeholder="密码" />
+        </div>
+        <div class="btn">
+          <button type="submit" :disabled="isDisabled">提交</button>
+        </div>
+      </form>
       <van-loading v-if="loading" color="#1989fa" />
     </div>
   </div>
@@ -20,8 +30,10 @@
 <script>
 import Vue from 'vue'
 import { Toast } from 'vant'
+import BackBtn from '@/components/BackBtn'
 Vue.use(Toast)
 export default {
+  name: 'Profile',
   data() {
     return {
       username: '',
@@ -29,9 +41,8 @@ export default {
       loading: false
     }
   },
-  deactivated() {
-    this.username = ''
-    this.password = ''
+  components: {
+    BackBtn
   },
   computed: {
     isDisabled() {
@@ -42,7 +53,8 @@ export default {
     back() {
       this.$router.back()
     },
-    onSubmit(values) {
+    onSubmit(e) {
+      e.preventDefault()
       if (this.loading) return
       this.loading = true
       setTimeout(() => {
@@ -56,38 +68,64 @@ export default {
 
 <style lang="scss" scoped>
 .login {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background: #fff;
-  z-index: 10;
+  z-index: 5;
 }
 .back-btn {
   position: fixed;
   top: 0;
   left: 0;
-  height: 50px;
-  width: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.4rem;
+  height: 0.88rem;
 }
-.van-form {
-  position: absolute;
-  top: 18%;
-  left: 0;
+form {
+  margin: 34% auto 0;
+  width: 6.6rem;
+}
+.title {
+  margin-bottom: 0.6rem;
+  font-weight: bold;
+  font-size: 0.34rem;
+  text-align: center;
+}
+.form-item {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.26rem;
+  color: #323233;
+  display: flex;
+}
+.label {
+  width: 1.6rem;
+  margin-top: 2px;
+}
+input,
+button {
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+input {
+  flex: 1;
+  padding: 0;
+}
+.btn {
+  width: 4rem;
+  height: 0.8rem;
+  margin: 0.6rem auto 0;
+}
+button {
   width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-  .title {
-    margin-bottom: 30px;
-    font-weight: bold;
-    font-size: 0.4rem;
-    text-align: center;
-  }
+  height: 100%;
+  border-radius: 999px;
+  background-color: #1989fa;
+  color: #fff;
+}
+button:disabled {
+  background-color: #84bcf4;
 }
 .van-loading {
   position: absolute;

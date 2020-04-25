@@ -1,31 +1,39 @@
 <template>
   <div class="shopping-cart">
-    <van-nav-bar title="购物车" fixed border />
-    <div class="content">
+    <TopBar>购物车</TopBar>
+
+    <div class="mian">
       <!-- 下拉区域 -->
       <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+        <!-- 购物车为空提示 -->
         <van-empty
           v-if="isEmpty"
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
           description="购物车是空的"
         />
+
+        <!-- 购物车列表 -->
         <div class="cart-list" v-else>
           <van-checkbox-group v-model="result" ref="checkboxGroup" @change="changeCheck">
+            <!-- 滑动单元 -->
             <van-swipe-cell
               v-for="item in cartList"
               :key="item.id"
               :before-close="beforeClose"
               :name="item.id"
             >
-              <div class="cell-content">
-                <van-checkbox :name="item.id" />
-                <van-card
-                  :price="item.price"
-                  :desc="item.desc"
+              <div class="cart-item">
+                <div class="checkbox-wrap">
+                  <van-checkbox :name="item.id" />
+                </div>
+                <MyCard
+                  class="card"
+                  :picture="item.picture"
+                  :link="item.link"
                   :title="item.title"
-                  :thumb="item.picture"
-                  :thumb-link="item.link"
+                  :desc="item.desc"
+                  :price="item.price"
                 >
                   <template #num>
                     <van-stepper
@@ -34,7 +42,7 @@
                       @change="changeNum(item.id, item.num)"
                     />
                   </template>
-                </van-card>
+                </MyCard>
               </div>
               <template #right>
                 <van-button class="delete-button" square text="删除" type="danger" />
@@ -43,9 +51,10 @@
           </van-checkbox-group>
         </div>
       </van-pull-refresh>
+
       <!-- 结算区域 -->
       <van-submit-bar :price="totalPrice" button-text="结算" @submit="onSubmit">
-        <van-checkbox v-model="checked">全选</van-checkbox>
+        <van-checkbox v-model="checked" @click="CheckAll">全选</van-checkbox>
       </van-submit-bar>
     </div>
   </div>
@@ -53,6 +62,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import TopBar from '@/components/TopBar'
+import MyCard from './components/MyCard'
 export default {
   data() {
     return {
@@ -62,8 +73,11 @@ export default {
       totalPrice: 0
     }
   },
+  components: {
+    TopBar,
+    MyCard
+  },
   created() {
-    console.log(window.location.host)
     this.$store.dispatch('getCartList')
   },
   computed: {
@@ -71,15 +85,6 @@ export default {
       cartList: 'cartList',
       isEmpty: 'cartEmpty'
     })
-  },
-  watch: {
-    checked() {
-      if (this.checked) {
-        this.$refs.checkboxGroup.toggleAll(this.checked)
-      } else {
-        this.$refs.checkboxGroup.toggleAll(this.checked)
-      }
-    }
   },
   methods: {
     // 下拉刷新
@@ -101,16 +106,21 @@ export default {
           break
       }
     },
-    // 切换商品勾选时触发
+    // 切换勾选商品时触发
     changeCheck() {
-      if (this.result.length === this.cartList.length) {
-        this.checked = true
-      } else {
-        this.checked = false
-      }
+      this.checked = this.result.length === this.cartList.length
       this.calcTotal(this.result, this.cartList)
     },
-    // 计算价格总和的方法
+    // 点击切换全选
+    CheckAll() {
+      this.$refs.checkboxGroup.toggleAll(!this.checked)
+    },
+    // 加减商品数量时触发
+    changeNum(id, num) {
+      this.calcTotal(this.result, this.cartList)
+      this.$store.dispatch('updateGoods', { id, num })
+    },
+    // 计算已选商品的总价格
     calcTotal(idArr, cartList) {
       let total = 0
       cartList.forEach((item, index) => {
@@ -122,11 +132,6 @@ export default {
       })
       this.totalPrice = total * 100
     },
-    // 数量变化时触发
-    changeNum(id, num) {
-      this.calcTotal(this.result, this.cartList)
-      this.$store.dispatch('updateGoods', { id, num })
-    },
     onSubmit() {
       if (this.result.length === 0) return
       this.$router.push({ path: '/profile' })
@@ -137,23 +142,18 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/css/variable.scss';
-.shopping-cart {
-  height: 100%;
-  box-sizing: border-box;
-  background: #f6f6f6;
-  overflow: hidden;
+.top-bar {
+  line-height: 0.88rem;
 }
-.content {
+.mian {
   position: absolute;
   left: 0;
-  top: 46px;
+  top: 0.88rem;
   bottom: $tabHeight;
   width: 100%;
   background: #f6f6f6;
   overflow: auto;
-  .van-empty {
-    height: 70vh;
-  }
+  .van-empty,
   .cart-list {
     width: 100%;
     min-height: 60vh;
@@ -163,22 +163,27 @@ export default {
     margin: 10px 10px 0 10px;
     background: #fff;
     border-radius: 10px;
-    .cell-content {
-      display: flex;
+  }
+  .cart-item {
+    display: flex;
+    .card {
+      flex: 1;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
     }
-  }
-  .van-checkbox {
-    flex: 1;
-    justify-content: center;
-    touch-action: none;
-  }
-  .van-card {
-    flex: 7;
-    padding-left: 0;
-    background: #fff;
+    .checkbox-wrap {
+      width: 0.8rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
   .delete-button {
     height: 100%;
+  }
+  .van-checkbox,
+  .van-stepper {
+    touch-action: none;
   }
   .van-submit-bar {
     position: fixed;
@@ -186,8 +191,6 @@ export default {
     bottom: $tabHeight;
     touch-action: none;
   }
-  .van-stepper {
-    touch-action: none;
-  }
 }
+//
 </style>

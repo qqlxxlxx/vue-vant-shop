@@ -34,29 +34,31 @@ export default {
 
 <style lang="scss" scoped>
 .history {
-  padding: 10px;
+  padding: 0.2rem;
+  font-size: 0.24rem;
 }
 .history-title {
-  margin-bottom: 10px;
+  margin-bottom: 0.32rem;
+  font-size: 0.26rem;
 }
 .history-list {
   display: flex;
   flex-wrap: wrap;
-  font-size: 13px;
-  .history-item {
-    padding: 6px 16px;
-    border-radius: 6px;
-    background: #f2f2f2;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
+}
+.history-item {
+  padding: 0.08rem 0.24rem;
+  border-radius: 0.1rem;
+  background: #f2f2f2;
+  margin-right: 0.16rem;
+  margin-bottom: 0.16rem;
 }
 .clear-history {
-  padding: 10px;
+  margin-top: 0.32rem;
   text-align: center;
+  color: #999;
   .van-icon {
     margin-right: 4px;
-    vertical-align: -2px;
+    vertical-align: -3px;
   }
 }
 </style>

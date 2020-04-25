@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/vant'
-import './assets/js/setRem'
 import './assets/css/global.css'
 
 import axios from 'axios'

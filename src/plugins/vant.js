@@ -2,16 +2,9 @@ import Vue from 'vue'
 
 import {
   Button,
-  Col,
-  Row,
   Tabbar,
   TabbarItem,
   Icon,
-  Search,
-  Swipe,
-  SwipeItem,
-  Grid,
-  GridItem,
   List,
   Tab,
   Tabs,
@@ -21,29 +14,18 @@ import {
   Sku,
   Empty,
   PullRefresh,
-  Card,
-  NavBar,
   SwipeCell,
   Checkbox,
   CheckboxGroup,
   SubmitBar,
   Stepper,
-  Form,
-  Field,
   Loading
 } from 'vant'
 
 Vue.use(Button)
-Vue.use(Col)
-Vue.use(Row)
 Vue.use(Tabbar)
 Vue.use(TabbarItem)
 Vue.use(Icon)
-Vue.use(Search)
-Vue.use(Swipe)
-Vue.use(SwipeItem)
-Vue.use(Grid)
-Vue.use(GridItem)
 Vue.use(List)
 Vue.use(Tab)
 Vue.use(Tabs)
@@ -53,13 +35,9 @@ Vue.use(GoodsActionButton)
 Vue.use(Sku)
 Vue.use(Empty)
 Vue.use(PullRefresh)
-Vue.use(Card)
-Vue.use(NavBar)
 Vue.use(SwipeCell)
 Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
 Vue.use(SubmitBar)
 Vue.use(Stepper)
-Vue.use(Form)
-Vue.use(Field)
 Vue.use(Loading)

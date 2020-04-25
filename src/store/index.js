@@ -28,10 +28,10 @@ const actions = {
   async updateGoods({ dispatch, state }, args) {
     try {
       const { id, num, update } = args
-      const paramsData = { num: num || 0 }
-      if (update) {
-        paramsData.update = Date().now()
+      const paramsData = {
+        num: num || 0
       }
+      if (update) paramsData.update = Date.now()
       const { data } = await Vue.prototype.$http.patch('/cart/' + id, paramsData)
       state.updateSuccess = !!data
       dispatch('getCartList')

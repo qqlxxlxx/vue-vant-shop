@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend border-top">
     <div class="title">&bull; 猜你喜欢 &bull;</div>
     <div class="product">
       <router-link
@@ -33,9 +33,8 @@ export default {
 @import '@/assets/css/variable.scss';
 .recommend {
   .title {
-    border-top: 0.16rem solid #f6f6f6;
     text-align: center;
-    font-size: 0.4rem;
+    font-size: 0.38rem;
     line-height: 2.4;
     color: #333;
   }

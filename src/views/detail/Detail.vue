@@ -1,9 +1,7 @@
 <template>
   <div class="detail">
     <div v-if="isEmpty">
-      <div class="tab-left" @click="back">
-        <van-icon name="arrow-left" />
-      </div>
+      <BackBtn class="back" />
       <van-empty
         class="custom-image"
         image="https://img.yzcdn.cn/vant/custom-empty-image.png"
@@ -20,66 +18,39 @@
         line-width="30px"
       >
         <template #nav-left>
-          <div class="tab-left" @click="back">
-            <van-icon name="arrow-left" />
-          </div>
+          <BackBtn />
+        </template>
+        <template #nav-right>
+          <div class="tab-right"></div>
         </template>
 
         <!-- 商品区域 -->
         <van-tab title="商品">
-          <!-- 轮播图 -->
-          <van-swipe :duration="1000" @change="changeImg">
-            <van-swipe-item v-for="(item, index) in banner" :key="index" @click="PreviewImg(index)">
-              <img :src="item" />
-            </van-swipe-item>
-            <template #indicator>
-              <div class="custom-indicator">{{ current + 1 }}/{{ banner.length }}</div>
-            </template>
-          </van-swipe>
-
-          <div class="goods-info">
-            <div class="price">
-              <span class="symbol">￥</span>
-              <span>{{price}}</span>
-            </div>
-            <div class="title">{{title}}</div>
-          </div>
-
-          <div class="service-warp border-top">
-            <label>服务</label>
-            <div class="service">
-              <div v-for="(item,index) in service" :key="index">{{item}}</div>
-            </div>
-          </div>
+          <swiper ref="mySwiper" :options="swiperOptions">
+            <swiper-slide v-for="(item, index) in banner" :key="index">
+              <img :src="item" @click="imgPreview(index)" />
+            </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
+          </swiper>
+          <Info :price="price" :title="title" />
+          <Service :service="service" />
         </van-tab>
+
         <!-- 参数区域 -->
         <van-tab title="参数">
-          <div class="props-wrap border-top">
-            <div class="props">规格参数</div>
-            <table>
-              <tbody>
-                <tr class="van-hairline--top" v-for="(item, index) in specifications" :key="index">
-                  <th>{{item[0]}}</th>
-                  <td>{{item[1]}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <Specifications :specifications="specifications" />
         </van-tab>
+
         <!-- 详情区域 -->
-        <van-tab title="详情">
+        <van-tab class="img-detail" title="详情">
           <div v-for="(item, index) in detailImg" :key="index">
             <img :src="item" />
           </div>
         </van-tab>
-
-        <template #nav-right>
-          <div class="tab-right"></div>
-        </template>
       </van-tabs>
 
       <van-goods-action>
-        <van-goods-action-icon to="/shoppingCart" icon="cart-o" text="购物车" />
+        <van-goods-action-icon to="/cart" icon="cart-o" text="购物车" />
         <van-goods-action-button type="warning" text="加入购物车" @click="showSku('addCart')" />
         <van-goods-action-button type="danger" text="立即购买" @click="showSku" />
       </van-goods-action>
@@ -103,16 +74,20 @@
 
 <script>
 import Vue from 'vue'
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import { ImagePreview, Toast } from 'vant'
+import BackBtn from '@/components/BackBtn'
+import Info from './components/Info'
+import Specifications from './components/Specifications'
+import Service from './components/Service'
+import 'swiper/css/swiper.css'
 Vue.use(Toast)
-// import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'Detail',
   data() {
     return {
       isEmpty: true,
       active: 0,
-      current: 0,
       banner: [],
       price: '',
       title: '',
@@ -121,13 +96,27 @@ export default {
       detailImg: [],
       isShowSku: true,
       sku: {},
-      isAddCart: true
+      isAddCart: true,
+      swiperOptions: {
+        pagination: {
+          el: '.swiper-pagination',
+          type: 'fraction'
+        },
+        loop: true
+      }
     }
+  },
+  components: {
+    BackBtn,
+    Swiper,
+    SwiperSlide,
+    Info,
+    Specifications,
+    Service
   },
   created() {
     this.getDetailData()
   },
-  computed: {},
   methods: {
     back() {
       this.$router.back()
@@ -150,10 +139,7 @@ export default {
         this.service = res[0].service
       } catch {}
     },
-    changeImg(index) {
-      this.current = index
-    },
-    PreviewImg(index) {
+    imgPreview(index) {
       ImagePreview({
         images: this.banner,
         loop: false,
@@ -210,116 +196,32 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/variable.scss';
 .detail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  width: 100%;
   min-height: 80vh;
-  padding-bottom: $tabHeight;
-  background-color: #fff;
+  padding-bottom: 1.2rem;
   font-size: 0.26rem;
-  overflow: hidden;
-  .border-top {
-    border-top: 0.2rem solid #f9f9f9;
-  }
   ::v-deep .van-tabs__line {
     background-color: #2ca6cb;
     margin-bottom: 2px;
   }
-  .tab-left {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-    @include center();
+  .back {
+    height: 0.88rem;
   }
   .tab-right {
     width: 44px;
   }
-  .custom-indicator {
-    position: absolute;
-    right: 0.4rem;
-    bottom: 0.4rem;
-    padding: 0.02rem 0.18rem;
+  .swiper-pagination {
+    margin-bottom: 0.36rem;
+    width: 1rem;
+    padding: 0.02rem 0.06rem;
     font-size: 0.28rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 0.3rem;
+    background: rgba(0, 0, 0, 0.3);
     color: #fff;
   }
-  .van-image-preview {
-    height: 50px;
+  .img-detail {
+    margin-bottom: env(safe-area-inset-bottom);
   }
-  .goods-info {
-    padding: 0.22rem;
-    font-weight: bold;
-    .price {
-      font-size: 0.52rem;
-      color: $priceColor;
-      .symbol {
-        font-size: 0.32rem;
-      }
-    }
-    .title {
-      margin-top: 0.1rem;
-      font-size: 0.3rem;
-    }
-  }
-  .service-warp {
-    position: relative;
-    padding: 0.22rem 0.22rem 0 0.22rem;
-    label {
-      position: absolute;
-      top: 0.2rem;
-      left: 0.2rem;
-      color: #666;
-    }
-    .service {
-      margin-left: 1.2rem;
-      div {
-        position: relative;
-        margin-bottom: 0.22rem;
-        line-height: normal;
-        color: #666;
-        &::before {
-          content: '';
-          display: inline-block;
-          vertical-align: middle;
-          width: 0.25rem;
-          height: 0.25rem;
-          margin-right: 0.1rem;
-          background: url(../../assets/images/icon_discount.png) no-repeat
-            center/cover;
-        }
-      }
-    }
-  }
-  .props-wrap {
-    padding: 0.22rem;
-    .props {
-      padding-bottom: 0.4rem;
-      font-weight: bold;
-      font-size: 0.3rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      tr {
-        th {
-          width: 1.8rem;
-          padding: 0.2rem 0.2rem 0.2rem 0;
-          text-align: left;
-          font-weight: normal;
-          color: #666;
-        }
-        td {
-          padding: 0.2rem 0 0.2rem 0.2rem;
-        }
-      }
-    }
-  }
-
   .van-goods-action {
-    height: $tabHeight;
+    z-index: 12;
     .van-goods-action-icon {
       width: 80px;
     }

@@ -1,9 +1,16 @@
 <template>
-  <div class="back-top-icon"></div>
+  <div class="back-top-icon" @click="backTop"></div>
 </template>
 
 <script>
-export default {}
+import tools from '@/assets/js/tools.js'
+export default {
+  methods: {
+    backTop() {
+      tools.setScrollTop(0)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
