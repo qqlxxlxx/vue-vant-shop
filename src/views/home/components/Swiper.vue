@@ -36,10 +36,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variable.scss';
-.my-swipe {
-  // @include imgWrapHeight(40%);
-}
 .swiper-slide {
   padding: 0.1rem 0.2rem;
   box-sizing: border-box;

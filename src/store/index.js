@@ -18,7 +18,10 @@ const actions = {
         '/cart?num_gte=1&_sort=update&_order=desc'
       )
       // console.log(data)
-      if (data.length === 0) state.cartEmpty = true
+      if (data.length === 0) {
+        state.cartEmpty = true
+        return
+      }
       state.cartList = data
       state.cartEmpty = false
     } catch (err) {

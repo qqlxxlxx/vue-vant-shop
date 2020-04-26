@@ -4,7 +4,10 @@
       <MySearch disabled />
     </TopBar>
 
-    <Swiper :bannerImages="bannerImages" />
+    <div class="my-swipe">
+      <Swiper v-if="showSwiper" :bannerImages="bannerImages" />
+    </div>
+
     <Category :category="category" @gridClick="cateClick" />
 
     <van-list
@@ -18,7 +21,7 @@
       <Recommend :productList="productList" />
     </van-list>
 
-    <TopIcon v-show="isShowBackTop" />
+    <TopIcon v-show="showTopIcon" />
   </div>
 </template>
 
@@ -35,7 +38,8 @@ export default {
     return {
       timerId: null,
       flag: true,
-      isShowBackTop: false,
+      showTopIcon: false,
+      showSwiper: false,
       bannerImages: [],
       category: [],
       page: 1,
@@ -73,8 +77,8 @@ export default {
       this.timerId && clearTimeout(this.timerId)
       this.timerId = setTimeout(() => {
         this.flag = true
-        this.isShowBackTop = tools.getScrollTop() > 500
-      }, 500)
+        this.showTopIcon = tools.getScrollTop() > 500
+      }, 800)
     },
     async getHomeData() {
       try {
@@ -83,6 +87,7 @@ export default {
         if (res.status !== 200) return
         this.bannerImages = res.data.banner
         this.category = res.data.category
+        this.showSwiper = true
       } catch {}
     },
     // 上拉加载
@@ -112,6 +117,9 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/variable.scss';
 .home {
+  .my-swipe {
+    @include imgWrapHeight(40%);
+  }
   position: relative;
   padding-top: 0.88rem;
   padding-bottom: $tabHeight;
