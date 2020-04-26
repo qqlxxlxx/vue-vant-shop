@@ -114,7 +114,9 @@ export default {
 .home {
   position: relative;
   padding-top: 0.88rem;
-  margin-bottom: 60px;
+  padding-bottom: $tabHeight;
+  box-sizing: border-box;
+  margin-bottom: env(safe-area-inset-bottom);
   .top-bar {
     padding: 0 0.4rem;
   }

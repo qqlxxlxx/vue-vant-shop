@@ -32,7 +32,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  base: process.env.BASE_URL,
+  base: 'vMall',
   routes,
   // 切换到新路由时，实现页面滚到顶部，或者是保持原先的滚动位置
   scrollBehavior(to, from, savedPosition) {
