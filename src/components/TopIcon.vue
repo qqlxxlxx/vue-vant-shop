@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import tools from '@/assets/js/tools.js'
+import { setScrollTop } from '@/assets/js/tools.js'
 export default {
   methods: {
     backTop() {
-      tools.setScrollTop(0)
+      setScrollTop(0)
     }
   }
 }
@@ -18,7 +18,7 @@ export default {
   position: fixed;
   bottom: 1.4rem;
   right: 0.2rem;
-  z-index: 2;
+  z-index: 5;
   width: 1rem;
   height: 1rem;
   margin-bottom: env(safe-area-inset-bottom);

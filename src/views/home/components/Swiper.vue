@@ -1,5 +1,10 @@
 <template>
-  <swiper ref="mySwiper" class="my-swipe" :options="swiperOptions">
+  <swiper
+    ref="mySwiper"
+    class="my-swipe"
+    v-if="bannerImages.length > 0 && update"
+    :options="swiperOptions"
+  >
     <swiper-slide v-for="(image, index) in bannerImages" :key="index">
       <img :src="image" />
     </swiper-slide>
@@ -22,7 +27,8 @@ export default {
           delay: 4000,
           disableOnInteraction: false
         }
-      }
+      },
+      update: true
     }
   },
   props: {
@@ -31,6 +37,12 @@ export default {
   components: {
     Swiper,
     SwiperSlide
+  },
+  activated() {
+    this.update = true
+  },
+  deactivated() {
+    this.update = false
   }
 }
 </script>

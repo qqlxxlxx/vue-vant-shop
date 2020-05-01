@@ -5,7 +5,7 @@
     </TopBar>
 
     <div class="my-swipe">
-      <Swiper v-if="showSwiper" :bannerImages="bannerImages" />
+      <Swiper :bannerImages="bannerImages" />
     </div>
 
     <Category :category="category" @gridClick="cateClick" />
@@ -39,7 +39,6 @@ export default {
       timerId: null,
       flag: true,
       showTopIcon: false,
-      showSwiper: false,
       bannerImages: [],
       category: [],
       page: 1,
@@ -64,21 +63,19 @@ export default {
     tools.setScrollTop(0)
   },
   activated() {
-    window.addEventListener('scroll', this.handleScroll, true)
+    window.addEventListener('scroll', tools.throttle(this.handleScroll), true)
   },
   deactivated() {
-    window.removeEventListener('scroll', this.handleScroll, true)
+    window.removeEventListener(
+      'scroll',
+      tools.throttle(this.handleScroll),
+      true
+    )
   },
   methods: {
-    handleScroll(e) {
-      // 函数节流
-      if (!this.flag) return
-      this.flag = false
-      this.timerId && clearTimeout(this.timerId)
-      this.timerId = setTimeout(() => {
-        this.flag = true
-        this.showTopIcon = tools.getScrollTop() > 500
-      }, 800)
+    handleScroll() {
+      this.flag = true
+      this.showTopIcon = tools.getScrollTop() > 500
     },
     async getHomeData() {
       try {
@@ -87,7 +84,6 @@ export default {
         if (res.status !== 200) return
         this.bannerImages = res.data.banner
         this.category = res.data.category
-        this.showSwiper = true
       } catch {}
     },
     // 上拉加载

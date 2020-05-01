@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import tools from '@/assets/js/tools.js'
+import { getScrollTop } from '@/assets/js/tools.js'
 
 Vue.use(VueRouter)
 
@@ -32,7 +32,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  base: 'vMall',
+  base: 'vmall',
   routes,
   // 切换到新路由时，实现页面滚到顶部，或者是保持原先的滚动位置
   scrollBehavior(to, from, savedPosition) {
@@ -50,7 +50,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // 将首页滚动位置存起来
-  if (from.path === '/home') from.meta.position = tools.getScrollTop()
+  if (from.path === '/home') from.meta.position = getScrollTop()
   next()
 })
 

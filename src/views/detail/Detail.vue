@@ -44,10 +44,12 @@
         <!-- 详情区域 -->
         <van-tab class="img-detail" title="详情">
           <div v-for="(item, index) in detailImg" :key="index">
-            <img :src="item" />
+            <img src="../../assets/images/mask.png" :data-src="item" />
           </div>
         </van-tab>
       </van-tabs>
+
+      <TopIcon v-show="showTopIcon" />
 
       <van-goods-action>
         <van-goods-action-icon to="/cart" icon="cart-o" text="购物车" />
@@ -74,19 +76,31 @@
 
 <script>
 import Vue from 'vue'
+import tools from '@/assets/js/tools.js'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
 import { ImagePreview, Toast } from 'vant'
 import BackBtn from '@/components/BackBtn'
+import TopIcon from '@/components/TopIcon'
 import Info from './components/Info'
 import Specifications from './components/Specifications'
 import Service from './components/Service'
-import 'swiper/css/swiper.css'
 Vue.use(Toast)
 export default {
   name: 'Detail',
+  components: {
+    BackBtn,
+    TopIcon,
+    Swiper,
+    SwiperSlide,
+    Info,
+    Specifications,
+    Service
+  },
   data() {
     return {
       isEmpty: true,
+      showTopIcon: false,
       active: 0,
       banner: [],
       price: '',
@@ -106,20 +120,25 @@ export default {
       }
     }
   },
-  components: {
-    BackBtn,
-    Swiper,
-    SwiperSlide,
-    Info,
-    Specifications,
-    Service
-  },
   created() {
     this.getDetailData()
+  },
+  mounted() {
+    window.addEventListener('scroll', tools.throttle(this.scroll), true)
   },
   methods: {
     back() {
       this.$router.back()
+    },
+    scroll() {
+      this.showTopIcon = tools.getScrollTop() > 500
+      const oLasyImg = document.querySelectorAll('[data-src]')
+      oLasyImg.forEach(item => {
+        if (item.getBoundingClientRect().top < innerHeight) {
+          item.src = item.dataset.src
+          item.removeAttribute('data-src')
+        }
+      })
     },
     async getDetailData() {
       try {
