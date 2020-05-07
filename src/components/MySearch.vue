@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="search-content">
-      <van-icon name="search" />
+      <van-icon class="search" name="search" />
       <input
         ref="input"
         type="search"
@@ -12,6 +12,7 @@
         @input="$emit('input', $event.target.value)"
         @keyup.enter="search"
       />
+      <van-icon v-show="value && value.length!==0" class="cross" name="cross" @click="$emit('cleanSearch')" />
     </div>
   </div>
 </template>
@@ -51,6 +52,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/css/variable.scss';
 .search {
   width: 100%;
   height: 100%;
@@ -62,18 +64,25 @@ export default {
   height: 100%;
   background: #f5f6f8;
   border-radius: 99px;
-  padding-left: 0.8rem;
+  padding: 0 0.8rem;
   box-sizing: border-box;
   position: relative;
   .van-icon {
     width: 0.8rem;
+    height: 100%;
+    padding: 0;
     font-size: 0.32rem;
     text-align: center;
     color: #aaa;
     position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
+    @include center();
+    &.search {
+      left: 0;
+    }
+    &.cross {
+      right: 0;
+    }
   }
   input {
     flex: 1;

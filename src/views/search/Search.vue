@@ -4,7 +4,13 @@
       <template #left>
         <BackBtn />
       </template>
-      <MySearch v-model="keywords" :isFocus="focus" @search="search" @empty="inputEmpty" />
+      <MySearch
+        v-model="keywords"
+        :isFocus="focus"
+        @search="search"
+        @empty="inputEmpty"
+        @cleanSearch="keywords=''"
+      />
       <template #right>
         <div class="search-btn" @click="search">搜索</div>
       </template>
@@ -124,7 +130,8 @@ export default {
     highLighter(data, keywords) {
       const reg = new RegExp(keywords, 'ig')
       const res = data.map(item => {
-        item.name = item.name.replace(reg, `<span style="color: red;">${keywords}</span>`)
+        const matchStr = reg.exec(item.name)[0]
+        item.name = item.name.replace(reg, `<span style="color: red;">${matchStr}</span>`)
         return item
       })
       return res
