@@ -72,6 +72,16 @@ export default {
           this.list = res.data
         })
     },
+    // 获取搜索结果
+    searchRequest(keywords) {
+      this.$http
+        .get('/productList?name_like=' + keywords)
+        .then(res => {
+          this.searchNone = res.data.length === 0
+          this.list = this.highLighter(res.data, keywords)
+        })
+        .catch(err => console.log(err))
+    },
     // 输入框为空时：清空搜索列表，隐藏搜索提示，显示搜索历史
     inputEmpty() {
       this.list = []
@@ -96,16 +106,6 @@ export default {
       this.historyList = []
       sessionStorage.removeItem('history')
     },
-    // 搜索的网络请求
-    searchRequest(keywords) {
-      this.$http
-        .get('/productList?name_like=' + keywords)
-        .then(res => {
-          this.searchNone = res.data.length === 0
-          this.list = res.data
-        })
-        .catch(err => console.log(err))
-    },
     // 存储历史记录的方法
     saveHistory(keywords) {
       const index = this.historyList.indexOf(keywords)
@@ -119,6 +119,15 @@ export default {
     getHistory() {
       const history = sessionStorage.getItem('history')
       this.historyList = history ? history.split(',') : []
+    },
+    // 给搜索关键字添加高亮
+    highLighter(data, keywords) {
+      const reg = new RegExp(keywords, 'ig')
+      const res = data.map(item => {
+        item.name = item.name.replace(reg, `<span style="color: red;">${keywords}</span>`)
+        return item
+      })
+      return res
     }
   }
 }
