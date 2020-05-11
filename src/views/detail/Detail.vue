@@ -117,7 +117,8 @@ export default {
           type: 'fraction'
         },
         loop: true
-      }
+      },
+      search: {}
     }
   },
   created() {
@@ -125,6 +126,13 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', tools.throttle(this.scroll), true)
+  },
+  // 除详情页后退到搜索页、搜索页需要缓存之外，其余情况搜索页不需要缓存
+  beforeRouteLeave(to, from, next) {
+    if (to.path !== '/search') {
+      this.$router.options.routes[5].meta.keepAlive = false
+    }
+    next()
   },
   methods: {
     back() {

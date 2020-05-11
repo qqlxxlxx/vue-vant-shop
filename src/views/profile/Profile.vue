@@ -67,6 +67,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.profile {
+  position: relative;
+}
 .login {
   position: absolute;
   top: 0;

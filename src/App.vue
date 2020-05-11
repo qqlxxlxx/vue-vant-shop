@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <keep-alive exclude="Detail,Search,Profile">
-      <router-view />
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive" />
     </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" />
+
     <van-tabbar v-show="$route.meta.tabbarShow" route active-color="#2ca6cb">
       <van-tabbar-item to="/home">
         <template #icon>

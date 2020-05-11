@@ -66,6 +66,15 @@ export default {
     // 获取历史记录
     this.getHistory()
   },
+  // 如果搜索页跳转到详情页，把搜索页缓存起来
+  beforeRouteLeave(to, from, next) {
+    if (to.path.startsWith('/detail')) {
+      from.meta.keepAlive = true
+    } else {
+      from.meta.keepAlive = false
+    }
+    next()
+  },
   methods: {
     back() {
       this.$router.back()
@@ -131,7 +140,10 @@ export default {
       const reg = new RegExp(keywords, 'ig')
       const res = data.map(item => {
         const matchStr = reg.exec(item.name)[0]
-        item.name = item.name.replace(reg, `<span style="color: red;">${matchStr}</span>`)
+        item.name = item.name.replace(
+          reg,
+          `<span style="color: red;">${matchStr}</span>`
+        )
         return item
       })
       return res

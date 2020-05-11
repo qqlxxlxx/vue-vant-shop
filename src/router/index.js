@@ -9,17 +9,17 @@ const routes = [
   {
     path: '/home',
     component: () => import(/* webpackChunkName: "home" */ '../views/home/Home.vue'),
-    meta: { tabbarShow: true }
+    meta: { tabbarShow: true, keepAlive: true }
   },
   {
     path: '/cart',
     component: () => import(/* webpackChunkName: "cart" */ '../views/cart/Cart.vue'),
-    meta: { tabbarShow: true }
+    meta: { tabbarShow: true, keepAlive: true }
   },
   {
     path: '/profile',
     component: () => import(/* webpackChunkName: "profile" */ '../views/profile/Profile.vue')
-    // meta: { tabbarShow: true }
+    // meta: { tabbarShow: true, keepAlive: true }
   },
   {
     path: '/detail/:id',
@@ -27,14 +27,15 @@ const routes = [
   },
   {
     path: '/search',
-    component: () => import(/* webpackChunkName: "search" */ '../views/search/Search.vue')
+    component: () => import(/* webpackChunkName: "search" */ '../views/search/Search.vue'),
+    meta: { keepAlive: true }
   }
 ]
 
 const router = new VueRouter({
   base: 'vmall',
   routes,
-  // 切换到新路由时，实现页面滚到顶部，或者是保持原先的滚动位置
+  // 切换到新路由时，实现页面滚到顶部，或者是保持原先的滚动位置：当触发浏览器后退等事件，savedPosition可用
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -49,9 +50,10 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // 将首页滚动位置存起来
-  if (from.path === '/home') from.meta.position = getScrollTop()
+  // 如果是首页，将滚动位置存起来
+  if (from.path === '/home') {
+    from.meta.position = getScrollTop()
+  }
   next()
 })
-
 export default router

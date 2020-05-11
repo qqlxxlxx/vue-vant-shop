@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <div class="search-content">
+    <form action="javascript:return false;" class="search-content">
       <van-icon class="search" name="search" />
       <input
         ref="input"
@@ -13,7 +13,7 @@
         @keyup.enter="search"
       />
       <van-icon v-show="value && value.length!==0" class="cross" name="cross" @click="$emit('cleanSearch')" />
-    </div>
+    </form>
   </div>
 </template>
 
