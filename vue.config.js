@@ -1,5 +1,6 @@
 module.exports = {
   publicPath: '/vmall',
+  productionSourceMap: false,
   chainWebpack: config => {
     // 产品发布模式
     config.when(process.env.NODE_ENV === 'production', config => {

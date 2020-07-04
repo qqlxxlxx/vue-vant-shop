@@ -1,21 +1,20 @@
 <template>
-  <swiper
-    ref="mySwiper"
-    class="my-swipe"
-    v-if="bannerImages.length > 0 && update"
-    :options="swiperOptions"
-  >
-    <swiper-slide v-for="(image, index) in bannerImages" :key="index">
-      <img :src="image" />
-    </swiper-slide>
-    <div class="swiper-pagination" slot="pagination"></div>
-  </swiper>
+  <div v-if="banner && banner.length > 0 && render">
+    <swiper ref="mySwiper" class="my-swipe" :options="swiperOptions">
+      <swiper-slide v-for="(imgSrc, index) in banner" :key="index">
+        <img :src="imgSrc" />
+      </swiper-slide>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </swiper>
+  </div>
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-import 'swiper/css/swiper.css'
 export default {
+  name: 'MySwiper',
+  props: {
+    banner: Array
+  },
   data() {
     return {
       swiperOptions: {
@@ -28,21 +27,14 @@ export default {
           disableOnInteraction: false
         }
       },
-      update: true
+      render: true
     }
   },
-  props: {
-    bannerImages: Array
-  },
-  components: {
-    Swiper,
-    SwiperSlide
-  },
   activated() {
-    this.update = true
+    this.render = true
   },
   deactivated() {
-    this.update = false
+    this.render = false
   }
 }
 </script>
@@ -53,6 +45,7 @@ export default {
   box-sizing: border-box;
 }
 img {
+  transform: translate3d(0, 0, 0);
   border-radius: 0.1rem;
   overflow: hidden;
   pointer-events: none;

@@ -1,34 +1,54 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { getScrollTop } from '@/assets/js/tools.js'
+import { getScrollTop } from '@/utils'
+import Layout from '@/views/layout/Layout'
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', redirect: '/home' },
   {
-    path: '/home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/home/Home.vue'),
-    meta: { tabbarShow: true, keepAlive: true }
+    path: '/',
+    redirect: '/home',
+    component: Layout,
+    children: [
+      {
+        path: 'home',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/home/Home.vue')
+      }
+    ]
   },
   {
     path: '/cart',
-    component: () => import(/* webpackChunkName: "cart" */ '../views/cart/Cart.vue'),
-    meta: { tabbarShow: true, keepAlive: true }
+    component: Layout,
+    children: [
+      {
+        path: '/cart',
+        component: () => import(/* webpackChunkName: "cart" */ '@/views/cart/Cart.vue')
+      }
+    ]
   },
   {
     path: '/profile',
-    component: () => import(/* webpackChunkName: "profile" */ '../views/profile/Profile.vue')
-    // meta: { tabbarShow: true, keepAlive: true }
+    component: Layout,
+    children: [
+      {
+        path: '/profile',
+        component: () => import(/* webpackChunkName: "profile" */ '@/views/profile/Profile.vue')
+      }
+    ]
   },
   {
     path: '/detail/:id',
-    component: () => import(/* webpackChunkName: "detail" */ '../views/detail/Detail.vue')
+    component: () => import(/* webpackChunkName: "detail" */ '@/views/detail/Detail.vue')
   },
   {
     path: '/search',
-    component: () => import(/* webpackChunkName: "search" */ '../views/search/Search.vue'),
-    meta: { keepAlive: true }
+    name: 'Search',
+    component: () => import(/* webpackChunkName: "search" */ '@/views/search/Search.vue')
+  },
+  {
+    path: '/login',
+    component: () => import(/* webpackChunkName: "search" */ '@/views/login/Login.vue')
   }
 ]
 
@@ -39,21 +59,27 @@ const router = new VueRouter({
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
+    } else if (to.path === '/home') {
+      return { x: 0, y: to.meta.position || 0 }
     } else {
-      if (to.path === '/home') {
-        const scrollY = to.meta.position || 0
-        return { x: 0, y: scrollY }
-      }
       return { x: 0, y: 0 }
     }
   }
 })
 
+const token = false
+
 router.beforeEach((to, from, next) => {
-  // 如果是首页，将滚动位置存起来
+  // 离开首页时，将滚动位置存起来
   if (from.path === '/home') {
     from.meta.position = getScrollTop()
   }
+  if (!token) {
+    if (to.path === '/profile') {
+      return next('/login')
+    }
+  }
   next()
 })
+
 export default router

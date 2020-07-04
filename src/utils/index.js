@@ -5,11 +5,17 @@ export function getScrollTop() {
 
 // 设置网页距离顶部滚动距离
 export function setScrollTop(scrollTop) {
-  document.documentElement.scrollTop = document.body.scrollTop = scrollTop
+  if (window.scrollTo) {
+    window.scrollTo(0, scrollTop)
+  } else if (document.body.scrollTop) {
+    document.documentElement.scrollTop = scrollTop
+  } else {
+    document.body.scrollTop = scrollTop
+  }
 }
 
 // 函数节流
-export function throttle(callBack, delay = 800) {
+export function throttle(callBack, delay = 500) {
   let timer = null
   let flag = true
   return function () {
@@ -22,10 +28,4 @@ export function throttle(callBack, delay = 800) {
       callBack.apply(this, args)
     }, delay)
   }
-}
-
-export default {
-  getScrollTop,
-  setScrollTop,
-  throttle
 }

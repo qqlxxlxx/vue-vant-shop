@@ -7,7 +7,7 @@
       <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
         <!-- 购物车为空提示 -->
         <van-empty
-          v-if="isEmpty"
+          v-if="cartList.length === 0"
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
           description="购物车是空的"
@@ -61,10 +61,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import TopBar from '@/components/TopBar'
 import MyCard from './components/MyCard'
 export default {
+  name: 'Cart',
   data() {
     return {
       isLoading: false,
@@ -78,18 +78,17 @@ export default {
     MyCard
   },
   created() {
-    this.$store.dispatch('getCartList')
+    this.$store.dispatch('cart/getCartList')
   },
   computed: {
-    ...mapState({
-      cartList: 'cartList',
-      isEmpty: 'cartEmpty'
-    })
+    cartList() {
+      return this.$store.state.cart.cartList
+    }
   },
   methods: {
     // 下拉刷新
     async onRefresh() {
-      await this.$store.dispatch('getCartList')
+      await this.$store.dispatch('cart/getCartList')
       this.isLoading = false
     },
     // 删除商品
@@ -101,7 +100,7 @@ export default {
           instance.close()
           break
         case 'right':
-          this.$store.dispatch('updateGoods', { id: name })
+          this.$store.dispatch('cart/delGoods', name)
           instance.close()
           break
       }
@@ -118,7 +117,7 @@ export default {
     // 加减商品数量时触发
     changeNum(id, num) {
       this.calcTotal(this.result, this.cartList)
-      this.$store.dispatch('updateGoods', { id, num })
+      this.$store.dispatch('cart/updateCart', { id, num })
     },
     // 计算已选商品的总价格
     calcTotal(idArr, cartList) {

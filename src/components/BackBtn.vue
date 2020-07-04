@@ -9,7 +9,7 @@ export default {
   name: 'BackBtn',
   methods: {
     back() {
-      this.$router.back()
+      this.$router.back(-1)
     }
   }
 }

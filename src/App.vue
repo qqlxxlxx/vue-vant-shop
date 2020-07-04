@@ -1,43 +1,25 @@
 <template>
   <div id="app">
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive" />
+    <keep-alive :include="keepAliveViews">
+      <router-view />
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive" />
-
-    <van-tabbar v-show="$route.meta.tabbarShow" route active-color="#2ca6cb">
-      <van-tabbar-item to="/home">
-        <template #icon>
-          <van-icon name="wap-home" size="0.36rem" />
-        </template>
-        首页
-      </van-tabbar-item>
-      <van-tabbar-item to="/cart">
-        <template #icon>
-          <van-icon name="shopping-cart" size="0.36rem" />
-        </template>
-        购物车
-      </van-tabbar-item>
-      <van-tabbar-item to="/profile">
-        <template #icon>
-          <van-icon name="manager" size="0.36rem" />
-        </template>
-        我的
-      </van-tabbar-item>
-    </van-tabbar>
   </div>
 </template>
 
-<style lang="scss">
-@import '@/assets/css/variable.scss';
-
-#app {
-  .van-tabbar {
-    height: $tabHeight;
-    background: rgba(250, 250, 250, 0.98);
-  }
-  .van-tabbar-item {
-    font-size: 0.2rem;
+<script>
+export default {
+  name: 'App',
+  computed: {
+    keepAliveViews() {
+      return this.$store.state.tagsView.keepAliveViews
+    }
+  },
+  watch: {
+    $route() {
+      if (this.$route.name === 'Search') {
+        this.$store.commit('tagsView/addCachedView', this.$route.name)
+      }
+    }
   }
 }
-</style>
+</script>

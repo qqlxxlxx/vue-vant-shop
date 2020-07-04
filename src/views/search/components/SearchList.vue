@@ -20,6 +20,7 @@
 
 <script>
 export default {
+  name: 'SearchList',
   props: {
     list: Array,
     keywords: String

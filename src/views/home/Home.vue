@@ -5,7 +5,7 @@
     </TopBar>
 
     <div class="my-swipe">
-      <Swiper :bannerImages="bannerImages" />
+      <MySwiper :banner="bannerImages" />
     </div>
 
     <Category :category="category" @gridClick="cateClick" />
@@ -26,14 +26,24 @@
 </template>
 
 <script>
-import tools from '@/assets/js/tools.js'
 import TopIcon from '@/components/TopIcon'
 import TopBar from '@/components/TopBar'
 import MySearch from '@/components/MySearch'
-import Swiper from './components/Swiper'
+import MySwiper from './components/MySwiper'
 import Category from './components/Category'
 import Recommend from './components/Recommend'
+import { getBannerCate, getProductList } from '@/api/home'
+import { throttle, getScrollTop } from '@/utils'
 export default {
+  name: 'Home',
+  components: {
+    TopIcon,
+    TopBar,
+    MySearch,
+    MySwiper,
+    Category,
+    Recommend
+  },
   data() {
     return {
       timerId: null,
@@ -48,57 +58,41 @@ export default {
       error: false
     }
   },
-  components: {
-    TopIcon,
-    TopBar,
-    MySearch,
-    Swiper,
-    Category,
-    Recommend
-  },
   created() {
     this.getHomeData()
   },
-  mounted() {
-    tools.setScrollTop(0)
-  },
   activated() {
-    window.addEventListener('scroll', tools.throttle(this.handleScroll), true)
+    window.addEventListener('scroll', throttle(this.handleScroll), true)
   },
   deactivated() {
-    window.removeEventListener(
-      'scroll',
-      tools.throttle(this.handleScroll),
-      true
-    )
+    window.removeEventListener('scroll', throttle(this.handleScroll), true)
   },
   methods: {
     handleScroll() {
       this.flag = true
-      this.showTopIcon = tools.getScrollTop() > 500
+      this.showTopIcon = getScrollTop() > 500
     },
-    async getHomeData() {
-      try {
-        const res = await this.$http.get('/home')
-        // console.log(res)
-        if (res.status !== 200) return
-        this.bannerImages = res.data.banner
-        this.category = res.data.category
-      } catch {}
+    getHomeData() {
+      getBannerCate().then(res => {
+        this.bannerImages = res.banner
+        this.category = res.category
+      })
     },
     // 上拉加载
-    async onLoad() {
-      try {
-        const queryInfo = `?_page=${this.page}&_limit=12`
-        const res = await this.$http.get('/productList' + queryInfo)
-        this.loading = false
-        if (res.data.length === 0) this.finished = true
-        this.productList.push(...res.data)
-        this.page += 1
-      } catch {
-        this.loading = false
-        this.error = true
-      }
+    onLoad() {
+      getProductList(this.page)
+        .then(res => {
+          this.loading = false
+          if (res.length === 0) {
+            this.finished = true
+          }
+          this.productList.push(...res)
+          this.page += 1
+        })
+        .catch(() => {
+          this.loading = false
+          this.error = true
+        })
     },
     cateClick(cate) {
       this.$router.push({ path: '/search', query: { cate } })

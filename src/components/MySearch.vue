@@ -6,6 +6,7 @@
         ref="input"
         type="search"
         placeholder="请输入搜索关键词"
+        autocapitalize="none"
         v-focus="isFocus"
         :disabled="disabled"
         :value="value"

@@ -30,10 +30,11 @@
 </template>
 
 <script>
+import { getSearchList, getCateList } from '@/api/search'
 import TopBar from '@/components/TopBar'
 import BackBtn from '@/components/BackBtn'
-import SearchList from './components/SearchList'
 import MySearch from '@/components/MySearch'
+import SearchList from './components/SearchList'
 import History from './components/History'
 export default {
   name: 'Search',
@@ -66,12 +67,10 @@ export default {
     // 获取历史记录
     this.getHistory()
   },
-  // 如果搜索页跳转到详情页，把搜索页缓存起来
+  // 不是跳转到详情页，移除缓存
   beforeRouteLeave(to, from, next) {
-    if (to.path.startsWith('/detail')) {
-      from.meta.keepAlive = true
-    } else {
-      from.meta.keepAlive = false
+    if (!to.path.startsWith('/detail')) {
+      this.$store.commit('tagsView/delCachedView', this.$route.name)
     }
     next()
   },
@@ -81,35 +80,30 @@ export default {
     },
     // 获取分类数据
     getCateList() {
-      this.$http
-        .get('/productList?cate=' + this.$route.query.cate)
-        .then(res => {
-          this.list = res.data
-        })
+      getCateList(this.$route.query.cate).then(res => {
+        this.list = res.data
+      })
     },
-    // 获取搜索结果
-    searchRequest(keywords) {
-      this.$http
-        .get('/productList?name_like=' + keywords)
-        .then(res => {
-          this.searchNone = res.data.length === 0
-          this.list = this.highLighter(res.data, keywords)
-        })
-        .catch(err => console.log(err))
-    },
-    // 输入框为空时：清空搜索列表，隐藏搜索提示，显示搜索历史
-    inputEmpty() {
-      this.list = []
-      this.searchNone = false
-      this.showHistory = true
-    },
-    // 搜索
+    // 关键字搜索
     search() {
       const keywords = this.keywords.trim()
       if (keywords === '') return
       this.showHistory = false
       this.saveHistory(keywords)
       this.searchRequest(keywords)
+    },
+    // 搜索请求
+    searchRequest(keywords) {
+      getSearchList(keywords).then(res => {
+        this.searchNone = res.length === 0
+        this.list = this.highLighter(res, keywords)
+      })
+    },
+    // 输入框为空时：清空搜索列表，隐藏搜索提示，显示搜索历史
+    inputEmpty() {
+      this.list = []
+      this.searchNone = false
+      this.showHistory = true
     },
     // 点击历史记录搜索
     historyClick(value) {

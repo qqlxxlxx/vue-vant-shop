@@ -14,7 +14,7 @@
         </div>
         <div class="info">
           <span class="name van-ellipsis">{{item.name}}</span>
-          <span class="price">￥ {{item.price}}</span>
+          <span class="price">{{'￥' + item.price}}</span>
         </div>
       </router-link>
     </div>
@@ -23,6 +23,7 @@
 
 <script>
 export default {
+  name: 'Recommend',
   props: {
     productList: Array
   }

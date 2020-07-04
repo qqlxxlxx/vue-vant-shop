@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { setScrollTop } from '@/assets/js/tools.js'
+import { setScrollTop } from '@/utils'
 export default {
   methods: {
     backTop() {

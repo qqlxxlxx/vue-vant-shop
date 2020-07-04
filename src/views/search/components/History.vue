@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: 'History',
   props: {
     showHistory: Boolean,
     historyList: Array

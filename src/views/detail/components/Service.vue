@@ -9,6 +9,7 @@
 
 <script>
 export default {
+  name: 'Service',
   props: {
     service: Array
   }
